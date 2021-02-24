@@ -1,3 +1,3 @@
 # a1excode-source
 
-<p>after migrate: <b>edit file: \app\Providers\AppServiceProvider.php</b></p>
+<p>after migrate edit file: <b>\app\Providers\AppServiceProvider.php</b></p>
