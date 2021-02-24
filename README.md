@@ -1,4 +1,3 @@
 # a1excode-source
 
-after migrate:
-\tdit file: \app\Providers\AppServiceProvider.php
+<p>after migrate: <b>edit file: \app\Providers\AppServiceProvider.php</b></p>
