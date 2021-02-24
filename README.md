@@ -1,3 +1,4 @@
 # a1excode-source
 
-edit file: \app\Providers\AppServiceProvider.php
+after migrate:
+    edit file: \app\Providers\AppServiceProvider.php
