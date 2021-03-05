@@ -183,6 +183,69 @@
                         })
                     }
 
+
+
+                    function getWeather() {
+                        var cityName = document.getElementById("cityName").value;
+                        var btn = $("#btnWeatherSubmit");
+                        var weatherErrors = $("#weatherErrors");
+
+                        var cityNameF = $("#cityNameF");
+                        var cityTemperature = $("#cityTemperature");
+                        var cityHumidity = $("#cityHumidity");
+                        var cityDescription = $("#cityDescription");
+
+
+
+                        $.ajax({
+                            url: "{{ route('index.weather.get') }}",
+                            type: 'POST',
+                            cache: false,
+                            data: {
+                                'city': cityName,
+                                '_token': "{{ csrf_token() }}"
+                            },
+                            dataType: 'text',
+                            beforeSend: function () {
+                                btn.addClass("disabled");
+                            },
+                            success: function (data) {
+                                btn.removeClass("disabled");
+
+                                weatherErrors.removeClass("alert-danger");
+                                weatherErrors.contents().remove();
+
+
+                                cityNameF.contents().remove();
+                                cityNameF.append(JSON.parse(data).city);
+
+                                cityTemperature.contents().remove();
+                                cityTemperature.append(JSON.parse(data).temp);
+
+                                cityHumidity.contents().remove();
+                                cityHumidity.append(JSON.parse(data).humidity);
+
+                                cityDescription.contents().remove();
+                                cityDescription.append(JSON.parse(data).description);
+                            },
+                            error: function (data) {
+                                btn.removeClass("disabled");
+
+                                var errors = JSON.parse(data.responseText);
+
+                                weatherErrors.addClass("alert");
+                                weatherErrors.addClass("alert-danger");
+                                weatherErrors.contents().remove();
+
+                                for (var i = 0; i < errors.errors['length']; i++) {
+                                    weatherErrors.append(errors.errors[i]+"<br>");
+                                }
+
+                            }
+                        })
+
+                    }
+
                 </script>
 
                 <div class="card">
@@ -235,6 +298,46 @@
                             </div>
 
                     </div>
+                </div>
+
+
+                <hr>
+
+                <div class="card">
+                    <div class="card-body rounded-top border-top p-5">
+
+                        <h3 class="font-weight-bold my-4">Погода в твоем городе: </h3>
+
+                        <div id="weatherErrors"></div>
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div class="form-group">
+                                    <input type="text" id="cityName" class="form-control" placeholder="Ваш город">
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="submit" id="btnWeatherSubmit" onclick="getWeather()" class="btn btn-info btn-md">Смотреть</button>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 mb-4 text-left">
+                                <br>
+                                <div class="alert alert-info">
+                                    <div>
+                                        <p>Город: <b id="cityNameF"></b></p>
+                                        <p>Температура: <b id="cityTemperature"></b><b> °C</b></p>
+                                        <p>Влажность: <b id="cityHumidity"></b><b> %</b></p>
+                                        <p>Описание: <b id="cityDescription"></b></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
                 </div>
 
             </section>

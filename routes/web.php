@@ -28,6 +28,9 @@ Route::post('/send/submit',
     '\App\Http\Controllers\MessageController@sendMessage'
 )->name('index.page.message');
 
+Route::post('/weather/submit/',
+    '\App\Http\Controllers\WeatherController@getWeather'
+)->name('index.weather.get');
 
 
 
