@@ -1,19 +1,17 @@
-@extends('layouts.example')
+<?php $__env->startSection('title'); ?> Админ панель <?php $__env->stopSection(); ?>
 
-@section('title') Админ панель @endsection
-
-@section('body-container')
+<?php $__env->startSection('body-container'); ?>
 
 
-    <link rel="stylesheet" href="{{ asset('css/jquery.cleditor.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('css/jquery.cleditor.css')); ?>">
 
     <div class="container-fluid">
 
         <h3 class="font-italic text-dark">Админ панель</h3>
 
         <div class="container">
-            <form enctype="multipart/form-data" action="{{ route('admin-new-post') }}" method="post" class="img-thumbnail">
-                @csrf
+            <form enctype="multipart/form-data" action="<?php echo e(route('admin-new-post')); ?>" method="post" class="img-thumbnail">
+                <?php echo csrf_field(); ?>
                 <div class="form-group">
                     <h2>Создание статьи</h2>
                 </div>
@@ -26,9 +24,9 @@
                 <div class="form-group">
                     <label for="exampleInputPassword1">Категория</label>
                     <select name="category">
-                        @foreach($categories as $cat)
-                            <option value="{{ $cat->name }}">{{ $cat->name }}</option>
-                        @endforeach
+                        <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($cat->name); ?>"><?php echo e($cat->name); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
                 </div>
 
@@ -51,8 +49,8 @@
 
         <div class="container">
 
-            <form action="{{ route('admin-delete-post') }}" method="post" class="img-thumbnail">
-                @csrf
+            <form action="<?php echo e(route('admin-delete-post')); ?>" method="post" class="img-thumbnail">
+                <?php echo csrf_field(); ?>
                 <div class="form-group">
                     <h2>Удаление статьи</h2>
                 </div>
@@ -69,7 +67,7 @@
 
         <div class="container">
 
-            <form action="{{ route('admin-update-post', ['id' => isset($_GET['id'])]) }}" method="get" class="img-thumbnail">
+            <form action="<?php echo e(route('admin-update-post', ['id' => isset($_GET['id'])])); ?>" method="get" class="img-thumbnail">
 
                 <div class="form-group">
                     <h2>Обновление статьи</h2>
@@ -88,8 +86,8 @@
 
         <div class="container">
 
-            <form action="{{ route('admin.upload') }}" method="post" enctype="multipart/form-data" class="img-thumbnail">
-                @csrf
+            <form action="<?php echo e(route('admin.upload')); ?>" method="post" enctype="multipart/form-data" class="img-thumbnail">
+                <?php echo csrf_field(); ?>
                 <div class="form-group">
                     <h2>Загрузка изображений</h2>
                 </div>
@@ -109,15 +107,15 @@
                 <h2>Последние шесть сообщений из формы</h2>
             </div>
 
-            @foreach($messages as $message)
+            <?php $__currentLoopData = $messages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $message): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
             <div class="alert alert-info">
-                <p><b>Имя:</b> {{ $message->user_name }} | <b>Email:</b> {{ $message->email }} | <b>Время:</b> {{ $message->created_at }}</p>
-                <h5><b>Тема:</b> {{ $message->message_theme }}</h5>
-                <p><b>Сообщение:</b> {{ $message->message_query }}</p>
+                <p><b>Имя:</b> <?php echo e($message->user_name); ?> | <b>Email:</b> <?php echo e($message->email); ?> | <b>Время:</b> <?php echo e($message->created_at); ?></p>
+                <h5><b>Тема:</b> <?php echo e($message->message_theme); ?></h5>
+                <p><b>Сообщение:</b> <?php echo e($message->message_query); ?></p>
             </div>
 
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
 
         </div>
@@ -130,15 +128,15 @@
                 <h2>Последние восемь комментариев к постам</h2>
             </div>
 
-            @foreach($comments as $comment)
+            <?php $__currentLoopData = $comments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $comment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
                 <div class="alert alert-info">
-                    <p><b>Имя:</b> {{ $comment->user_name }} | <b>Email:</b> {{ $comment->email_address }} | <b>Время:</b> {{ $comment->created_at }}</p>
-                    <h6><b>Пост:</b> <a href="{{ route('post-page', $comment->post_id) }}">{{ $comment->title }}</a></h6>
-                    <p><b>Комментарий:</b> {{ $comment->comment_query }}</p>
+                    <p><b>Имя:</b> <?php echo e($comment->user_name); ?> | <b>Email:</b> <?php echo e($comment->email_address); ?> | <b>Время:</b> <?php echo e($comment->created_at); ?></p>
+                    <h6><b>Пост:</b> <a href="<?php echo e(route('post-page', $comment->post_id)); ?>"><?php echo e($comment->title); ?></a></h6>
+                    <p><b>Комментарий:</b> <?php echo e($comment->comment_query); ?></p>
                 </div>
 
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
 
         </div>
@@ -149,8 +147,10 @@
         <br>
     </div>
 
-    <script src="{{ asset('js/jquery.cleditor.js') }}"></script>
+    <script src="<?php echo e(asset('js/jquery.cleditor.js')); ?>"></script>
     <script>
         $(document).ready(function () { $("#input").cleditor(); });
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.example', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Admin\Documents\projects\a1excode-source\resources\views/admin/admin.blade.php ENDPATH**/ ?>

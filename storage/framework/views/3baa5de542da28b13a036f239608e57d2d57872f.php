@@ -1,16 +1,14 @@
-@extends('layouts.example')
+<?php $__env->startSection('title'); ?> A1exCode - все о программировании <?php $__env->stopSection(); ?>
 
-@section('title') A1exCode - все о программировании @endsection
+<?php if(auth()->guard()->check()): ?>
+    <?php if(auth()->user()->type == 'admin'): ?>
 
-@auth()
-    @if(auth()->user()->type == 'admin')
+        <div class="alert alert-success"> <a href="<?php echo e(route('admin-page')); ?>"> Войти в админку </a> </div>
 
-        <div class="alert alert-success"> <a href="{{ route('admin-page') }}"> Войти в админку </a> </div>
+    <?php endif; ?>
+<?php endif; ?>
 
-    @endif
-@endauth
-
-@section('body-container')
+<?php $__env->startSection('body-container'); ?>
 
     <div class="row">
 
@@ -20,16 +18,16 @@
                         <div class="row">
                             <div class="col-md-6 mb-4 mb-md-0">
                                 <div class="view overlay z-depth-1-half">
-                                    <img src="{{ asset('storage').'/'.$topPost->general_image }}" class="img-fluid" alt="">
+                                    <img src="<?php echo e(asset('storage').'/'.$topPost->general_image); ?>" class="img-fluid" alt="">
                                     <a href="#">
                                         <div class="mask rgba-white-light"></div>
                                     </a>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4 mb-md-0">
-                                <h3 class="font-weight-bold">{{ $topPost->title}}</h3>
-                                <p class="text-muted">{!! mb_substr(strip_tags($topPost->post_query), 0, 250) !!}</p>
-                                <a class="btn btn-success" href="{{ route('post-page', $topPost->id) }}" role="button">Читать</a>
+                                <h3 class="font-weight-bold"><?php echo e($topPost->title); ?></h3>
+                                <p class="text-muted"><?php echo mb_substr(strip_tags($topPost->post_query), 0, 250); ?></p>
+                                <a class="btn btn-success" href="<?php echo e(route('post-page', $topPost->id)); ?>" role="button">Читать</a>
                             </div>
                         </div>
                     </section>
@@ -42,7 +40,7 @@
 
     <div class="row">
 
-        @foreach($posts as $post)
+        <?php $__currentLoopData = $posts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $post): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
             <div class="col-md-6">
                 <div class="container my-5 py-5 z-depth-1">
@@ -50,23 +48,23 @@
                         <div class="row">
                             <div class="col-md-6 mb-4 mb-md-0">
                                 <div class="view overlay z-depth-1-half">
-                                    <img src="{{ asset('storage').'/'.$post->general_image }}" class="img-fluid" alt="">
+                                    <img src="<?php echo e(asset('storage').'/'.$post->general_image); ?>" class="img-fluid" alt="">
                                     <a href="#">
                                         <div class="mask rgba-white-light"></div>
                                     </a>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4 mb-md-0">
-                                <h3 class="font-weight-bold">{{ $post->title }}</h3>
-                                <p class="text-muted">{!! mb_substr(strip_tags($post->post_query), 0, 170) !!}</p>
-                                <a class="btn btn-success" href="{{ route('post-page', $post->id) }}" role="button">Читать</a>
+                                <h3 class="font-weight-bold"><?php echo e($post->title); ?></h3>
+                                <p class="text-muted"><?php echo mb_substr(strip_tags($post->post_query), 0, 170); ?></p>
+                                <a class="btn btn-success" href="<?php echo e(route('post-page', $post->id)); ?>" role="button">Читать</a>
                             </div>
                         </div>
                     </section>
                 </div>
             </div>
 
-        @endforeach
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
 
 
@@ -144,7 +142,7 @@
                         var btn = $("#btnSubmit");
 
                         $.ajax({
-                            url: "{{ route('index.page.message') }}",
+                            url: "<?php echo e(route('index.page.message')); ?>",
                             type: 'POST',
                             cache: false,
                             data: {
@@ -152,7 +150,7 @@
                                 'email': email,
                                 'subject': subject,
                                 'message': message,
-                                '_token': "{{ csrf_token() }}"
+                                '_token': "<?php echo e(csrf_token()); ?>"
                             },
                             dataType: 'text',
                             beforeSend: function () {
@@ -203,12 +201,12 @@
 
 
                         $.ajax({
-                            url: "{{ route('index.weather.get') }}",
+                            url: "<?php echo e(route('index.weather.get')); ?>",
                             type: 'POST',
                             cache: false,
                             data: {
                                 'city': cityName,
-                                '_token': "{{ csrf_token() }}"
+                                '_token': "<?php echo e(csrf_token()); ?>"
                             },
                             dataType: 'text',
                             beforeSend: function () {
@@ -355,4 +353,6 @@
     </div>
     </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.example', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Admin\Documents\projects\a1excode-source\resources\views/index.blade.php ENDPATH**/ ?>

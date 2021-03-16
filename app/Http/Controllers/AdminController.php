@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
+use App\Models\Message;
 use App\Models\Post;
 
 use App\Http\Requests\PostRequest;
@@ -15,7 +17,13 @@ class AdminController extends Controller
 
     public function adminPage()
     {
-        return view('admin.admin');
+        $messages = new Message();
+        $comments = new Comment();
+
+        return view('admin.admin', [
+            'messages' => $messages->orderBy('id', 'desc')->limit(6)->get(),
+            'comments' => $comments->leftJoin('posts', 'comments.post_id', '=', 'posts.id')->limit(8)->get()
+        ]);
     }
 
 
