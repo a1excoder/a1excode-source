@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Response;
 class WeatherController extends Controller
 {
 
-    private static $apiKey = '5d02a677f91667c53fba68306ffd088d';
+    private static $apiKey = '---';
 
     public function getWeather(Request $request)
     {
