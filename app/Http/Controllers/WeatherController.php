@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Response;
 class WeatherController extends Controller
 {
 
-    private static $apiKey = '---';
+    private static $apiKey = '5d02a677f91667c53fba68306ffd088d';
 
     public function getWeather(Request $request)
     {
@@ -38,13 +38,24 @@ class WeatherController extends Controller
                 'lang' => 'ru'
             ]);
 
-            return Response::json([
-                'success' => true,
-                'temp' => $response['main']['temp'],
-                'city' => $response['name'],
-                'humidity' => $response['main']['humidity'],
-                'description' => $response['weather'][0]['description']
-            ], 200);
+            if ($response->failed()) {
+
+                return Response::json([
+                    'success' => false,
+                    'errors' => ['Некорректное название города']
+                ], 422);
+
+            } else {
+
+                return Response::json([
+                    'success' => true,
+                    'temp' => $response['main']['temp'],
+                    'city' => $response['name'],
+                    'humidity' => $response['main']['humidity'],
+                    'description' => $response['weather'][0]['description']
+                ], 200);
+            }
+
 
         }
 

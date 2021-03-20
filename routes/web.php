@@ -33,7 +33,6 @@ Route::post('/weather/submit/',
 )->name('index.weather.get');
 
 
-
 Auth::routes();
 
 Route::get('/home',
@@ -100,3 +99,12 @@ Route::post('/admin/upload',
 )
     ->middleware('is_admin')
     ->name('admin.upload');
+
+
+Route::post('admin/category/new',
+    '\App\Http\Controllers\AdminController@createCategory'
+)->name('admin.new.category');
+
+Route::post('admin/category/delete',
+    '\App\Http\Controllers\AdminController@deleteCategory'
+)->name('admin.delete.category');

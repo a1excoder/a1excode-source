@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\Message;
 use App\Models\Post;
+use App\Models\Category;
 
 use App\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 
 class AdminController extends Controller
@@ -21,8 +23,15 @@ class AdminController extends Controller
         $comments = new Comment();
 
         return view('admin.admin', [
-            'messages' => $messages->orderBy('id', 'desc')->limit(6)->get(),
-            'comments' => $comments->leftJoin('posts', 'comments.post_id', '=', 'posts.id')->limit(8)->get()
+            'messages' => $messages->
+            orderBy('id', 'desc')
+            ->limit(6)
+            ->get(),
+
+            'comments' => $comments->
+            leftJoin('posts', 'comments.post_id', '=', 'posts.id')
+            ->limit(8)
+            ->get()
         ]);
     }
 
@@ -104,6 +113,57 @@ class AdminController extends Controller
         $image = $request->file('image_i')->store('uploads', 'public');
         $pathToFile = asset('storage').'/'.$image;
         return redirect()->route('admin-page')->with('success', 'Image url: <a href='.$pathToFile.'>'.$pathToFile.'</a>');
+    }
+
+
+    public function createCategory(Request $request)
+    {
+        $categoryModel = new Category();
+
+        $valid = $request->validate(
+            ['new_category' => 'required'], 
+            ['new_category.required' => 'Введите название категории']
+        );
+
+        $categoryName = $request->input('new_category');
+        $checkCategory = $categoryModel->orderBy('id', 'desc')->where('name', '=', $categoryName)->get();
+
+        if ($checkCategory != '[]') {
+            return redirect()->route('admin-page')->with('danger', 'Такая категория уже существует!');
+
+        } else {
+
+            $categoryModel->name = $categoryName;
+            $categoryModel->save();
+
+            return redirect()->route('admin-page')->with('success', 'Категория была создана!');
+        }
+
+        
+    }
+
+
+    public function deleteCategory(Request $request)
+    {
+        $categoryModel = new Category();
+
+        $valid = $request->validate(
+            ['category_name' => 'required'], 
+            ['category_name.required' => 'Выберите категорию']
+        );
+
+        $categoryName = $request->input('category_name');
+        $checkCategory = $categoryModel->orderBy('id', 'desc')->where('name', '=', $categoryName);
+
+        if ($checkCategory == '') {
+            return redirect()->route('admin-page')->with('danger', 'Такой категории не существует!');
+
+        } else {
+
+            $checkCategory->delete();
+            return redirect()->route('admin-page')->with('success', 'Категория была удалена');
+        }
+
     }
 
 
