@@ -16,11 +16,10 @@ class WeatherController extends Controller
     public function getWeather(Request $request)
     {
 
-        $valid = Validator::make($request->all(), [
-            'city' => 'required'
-        ], [
-            'city.required' => 'Введите название вашего города'
-        ]);
+        $valid = Validator::make($request->all(),
+            ['city' => 'required'],
+            ['city.required' => 'Введите название вашего города']
+        );
 
 
         if ($valid->fails()) {
