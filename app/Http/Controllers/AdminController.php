@@ -30,6 +30,7 @@ class AdminController extends Controller
 
             'comments' => $comments->
             leftJoin('posts', 'comments.post_id', '=', 'posts.id')
+            ->orderBy('posts.id', 'desc')
             ->limit(8)
             ->get()
         ]);
