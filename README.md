@@ -1,6 +1,8 @@
 # a1excode-source
 
-<p>after migrate edit file: <b>\app\Providers\AppServiceProvider.php</b></p>
-<p>cd public || rm -r storage</p>
-<p>php artisan storage:link</p>
-<p>php artisan migrate</p>
+``
+nano \app\Providers\AppServiceProvider.php
+cd public || rm -r storage
+php artisan storage:link
+php artisan migrate
+```
